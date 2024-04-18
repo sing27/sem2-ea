@@ -64,7 +64,7 @@ def require_role(role):
         def wrapped_function(*args, **kwargs):
             if not current_user.has_role(role):
                 flash('You do not have permissions! If you need any assistance please contact the admin.')
-                return redirect("/user/admin")
+                return redirect(request.referrer)
             else:
                 return func(*args, **kwargs)
         return wrapped_function

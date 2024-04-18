@@ -96,19 +96,19 @@ def register():
     return render_template('register.html.j2', title=_('Register'), form=form)
 
 
-@app.route('/restaurant_register', methods=['GET', 'POST'])
-def restaurant_register():
+@app.route('/admin_register', methods=['GET', 'POST'])
+def admin_register():
     if current_user.is_authenticated:
         return redirect(url_for('index'))
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(username=form.username.data, email=form.email.data, role='restaurant')
+        user = User(username=form.username.data, email=form.email.data, role='admin')
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash(_('Congratulations, you are now a registered restaurant_account!'))
+        flash(_('Congratulations, you are now a registered admin!'))
         return redirect(url_for('login'))
-    return render_template('restaurant_register.html.j2', title=_('Register'), form=form)
+    return render_template('admin_register.html.j2', title=_('Register'), form=form)
 
 
 @app.route('/reset_password_request', methods=['GET', 'POST'])

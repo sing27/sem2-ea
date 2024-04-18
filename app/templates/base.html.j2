@@ -37,9 +37,9 @@
                             <a href="{{ url_for('login') }}">{{ _('Login') }}</a>
                         </li>                 
                     {% else %}
-                        <li>
+                        {#<li>
                             <a href="{{ url_for('user', username=current_user.username) }}">{{ _('Restaurant Config') }}</a>
-                        </li>
+                        </li>#}
                         <li>
                             <a href="{{ url_for('user', username=current_user.username) }}">{{ _('Profile') }}</a>
                         </li>
