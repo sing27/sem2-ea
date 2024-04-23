@@ -23,6 +23,7 @@ def before_request():
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    ip_address = request.remote_addr
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user)
@@ -39,7 +40,7 @@ def index():
         'index', page=posts.prev_num) if posts.prev_num else None
     return render_template('index.html.j2', title=_('Home'), form=form,
                            posts=posts.items, next_url=next_url,
-                           prev_url=prev_url)
+                           prev_url=prev_url, ip_address=ip_address)
 
 
 @app.route('/explore')
