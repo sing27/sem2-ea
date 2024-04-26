@@ -24,5 +24,5 @@ USER microblog
 
 RUN . venv/bin/activate && flask translate compile
 
-EXPOSE 80
+EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
