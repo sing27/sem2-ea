@@ -70,7 +70,8 @@ services:
       - "./logs:/var/log/nginx"
       - "./html:/usr/share/nginx/html"
     restart: always
-
+    networks:
+      - flask_app
 
 networks:
   flask_app:
