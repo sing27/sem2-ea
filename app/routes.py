@@ -23,7 +23,10 @@ def before_request():
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    ip_address = request.remote_addr
+    ip_address = '{}:{}'.format(
+        url_parse(request.base_url).host,
+        url_parse(request.base_url).port
+    )
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data, author=current_user)
