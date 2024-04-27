@@ -38,6 +38,9 @@
                         </li>                 
                     {% else %}
                         <li>
+                            <a href="{{ url_for('Coupon') }}">{{ _('Coupon') }}</a>
+                        </li>
+                        <li>
                             <a href="{{ url_for('new_restaurant_submit') }}">{{ _('New Restaurant') }}</a>
                         </li>
                         <li>

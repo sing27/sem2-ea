@@ -255,3 +255,9 @@ def new_restaurant():
     return render_template('Rindex.html.j2', title=_('new_restaurant'),
                            posts=posts.items, next_url=next_url,
                            prev_url=prev_url)
+
+
+@app.route('/Coupon', methods=['GET'])
+@login_required
+def Coupon():
+    return render_template('Coupon.html.j2', )
