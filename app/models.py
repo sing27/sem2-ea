@@ -108,6 +108,60 @@ class User(UserMixin, db.Model):
             return True
         else:
             return False
+
+
+
+cuisine_restaurant = db.Table('cuisine_restaurant',
+    db.Column('cuisine_id', db.Integer, db.ForeignKey('cuisine.id'), primary_key=True),
+    db.Column('restaurant_id', db.Integer, db.ForeignKey('restaurant.id'), primary_key=True)
+)
+
+
+class District(db.Model):
+    __tablename__ = 'district'
+    id = db.Column(db.Integer, primary_key=True)
+    district_name = db.Column(db.String(50))
+
+class Cuisine(db.Model):
+    __tablename__ = 'cuisine'
+    id = db.Column(db.Integer, primary_key=True)
+    cuisine_name = db.Column(db.String(50))
+
+class Restaurant(db.Model):
+    __tablename__ = 'restaurant'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    address = db.Column(db.String(200))
+    phone = db.Column(db.String(20))
+    price_range = db.Column(db.String(20))
+    district_id = db.Column(db.Integer, db.ForeignKey('district.id'))
+    cuisines_id = db.Column(db.Integer, db.ForeignKey('cuisine.id'))
+
+    def __repr__(self):
+        return f'<Restaurant {self.name}>'
+    
+
+
+class Price(db.Model):
+    __tablename__ = 'price'
+    id = db.Column(db.Integer, primary_key=True)
+    price_range = db.Column(db.String(50))
+
+class Served(db.Model):
+    __tablename__ = 'served_during'
+    id = db.Column(db.Integer, primary_key=True)
+    served_time = db.Column(db.String(50))
+
+class Coupon(db.Model):
+    __tablename__ = 'coupon'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100))
+    address = db.Column(db.String(200))
+    price_id = db.Column(db.Integer, db.ForeignKey('price.id'))
+    Served_id = db.Column(db.Integer, db.ForeignKey('served_during.id'))
+
+    def __repr__(self):
+        return f'<Restaurant {self.name}>'
     
 
 

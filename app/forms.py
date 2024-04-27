@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
+from wtforms import FloatField, SelectField, StringField, PasswordField, BooleanField, SubmitField, \
     TextAreaField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
@@ -32,7 +32,20 @@ class RegistrationForm(FlaskForm):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError(_('Please use a different email address.'))
+        
 
+
+class RestaurantForm(FlaskForm):
+    district_choices = [('Central', 'Central'), ('Wan Chai', 'Wan Chai'), ('Tsim Sha Tsui', 'Tsim Sha Tsui'), ('Causeway Bay', 'Causeway Bay'), ('Mong Kok', 'Mong Kok')]
+    cuisine_choices = [('Chinese', 'Chinese'), ('Japanese', 'Japanese'), ('Italian', 'Italian'), ('French', 'French'), ('Indian', 'Indian')]
+    name = StringField(_l('Restaurant Name'), validators=[DataRequired()])
+    address = StringField(_l('Address'), validators=[DataRequired()])
+    phone = FloatField(_l('Phone'), validators=[DataRequired()])
+    price_range = FloatField(_l('Price Range'), validators=[DataRequired()])
+    district_name = SelectField(_l('Select District'), choices=district_choices, validators=[DataRequired()])
+    cuisine_name = SelectField(_l('Cuisine Name'), choices=cuisine_choices, validators=[DataRequired()])
+
+    submit = SubmitField(_l('Sumbit'))
 
 class ResetPasswordRequestForm(FlaskForm):
     email = StringField(_l('Email'), validators=[DataRequired(), Email()])
