@@ -5,8 +5,8 @@ from werkzeug.urls import url_parse
 from flask_babel import _, get_locale
 from app import app, db, require_role
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, \
-    ResetPasswordRequestForm, ResetPasswordForm
-from app.models import Role, User, Post
+    ResetPasswordRequestForm, ResetPasswordForm, RestaurantForm
+from app.models import Cuisine, District, Restaurant, Role, User, Post
 from app.email import send_password_reset_email
 from flask_security import SQLAlchemyUserDatastore, Security
 
@@ -220,3 +220,38 @@ def delete_post(post_id):
     db.session.commit()
     flash("Delete successfully")
     return redirect(url_for('explore'))
+
+
+@app.route('/new_restaurant_submit', methods=['GET', 'POST'])
+@login_required
+def new_restaurant_submit():
+    form = RestaurantForm()
+    if form.validate_on_submit():
+        district = District(district_name=form.district_name.data)
+        cuisine = Cuisine(cuisine_name=form.cuisine_name.data)
+        db.session.add(district)
+        db.session.add(cuisine)
+        db.session.commit()
+        districtid = District.query.filter_by(district_name=form.district_name.data).value(District.id)
+        cuisineid = Cuisine.query.filter_by(cuisine_name=form.cuisine_name.data).value(Cuisine.id)
+        restaurant = Restaurant(name=form.name.data, address=form.address.data, phone=form.phone.data, price_range=form.price_range.data, district_id=districtid, cuisines_id=cuisineid)
+        db.session.add(restaurant)
+        db.session.commit()
+        flash(_('Congratulations, you are now submit!'))
+        return redirect(url_for('new_restaurant'))
+    return render_template('new_restaurant_submit.html.j2', title=_('Sumbit'), form=form)
+
+
+@app.route('/new_restaurant', methods=['GET'])
+@login_required
+def new_restaurant():
+    page = request.args.get('page', 1, type=int)
+    posts = Restaurant.query.order_by(Restaurant.id.asc()).paginate(
+        page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False) 
+    next_url = url_for(
+        'new_restaurant', page=posts.next_num) if posts.next_num else None
+    prev_url = url_for(
+        'new_restaurant', page=posts.prev_num) if posts.prev_num else None
+    return render_template('Rindex.html.j2', title=_('new_restaurant'),
+                           posts=posts.items, next_url=next_url,
+                           prev_url=prev_url)
