@@ -23,9 +23,8 @@ def before_request():
 @app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
-    ip_address = '{}:{}'.format(
-        url_parse(request.base_url).host,
-        url_parse(request.base_url).port
+    ip_address = '{}'.format(
+        url_parse(request.base_url).host
     )
     form = PostForm()
     if form.validate_on_submit():
@@ -49,6 +48,9 @@ def index():
 @app.route('/explore')
 @login_required
 def explore():
+    ip_address = '{}'.format(
+        url_parse(request.base_url).host
+    )
     page = request.args.get('page', 1, type=int)
     posts = Post.query.order_by(Post.timestamp.desc()).paginate(
         page=page, per_page=app.config["POSTS_PER_PAGE"], error_out=False)
@@ -58,7 +60,7 @@ def explore():
         'explore', page=posts.prev_num) if posts.prev_num else None
     return render_template('index.html.j2', title=_('Explore'),
                            posts=posts.items, next_url=next_url,
-                           prev_url=prev_url)
+                           prev_url=prev_url, ip_address=ip_address)
 
 current_user
 @app.route('/login', methods=['GET', 'POST'])
