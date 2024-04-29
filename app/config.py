@@ -6,6 +6,8 @@ PASSWORD ="postgres"
 PUBLIC_IP_ADDRESS ="34.132.90.11:5432"
 DBNAME ="postgres"
 
+#'postgresql://postgres:postgres@postgresdb:5432/postgres'
+
 class Config(object):
     SECRET_KEY = os.environ.get("SECRET_KEY") or "you-will-never-guess"
     SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI") or \
